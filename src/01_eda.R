@@ -23,6 +23,7 @@ df_cpj_union <- df_cpj %>%
                             date_registered, month_year, year) ) 
 
 df_cpj_union
+cache('df_cpj_union')
 
 
 # Variables ----

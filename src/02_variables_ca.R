@@ -22,7 +22,7 @@ df_cpj_tidy <- df_cpj_confirmed %>%
          value = fct_explicit_na(value, na_level = "Unknown"))
 
 df_cpj_tidy %>% data.frame() %>% head()
-
+cache("df_cpj_tidy")
 
 
 
