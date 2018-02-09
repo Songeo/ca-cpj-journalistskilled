@@ -3,67 +3,84 @@
 library(ProjectTemplate)
 load.project()
 
+
 library(plotly)
+library(imputeTS)
+library(mi)
+
+# Union de df ----
+df_cpj %>% head()
+df_cpj_confirmed %>% head
+
+df_cpj_union <- df_cpj %>% 
+  dplyr::select(name, sex, `country killed`, 
+                motive,
+                date_registered, month_year, year) %>% 
+  filter(motive == "Unconfirmed") %>% 
+  bind_rows(df_cpj_confirmed %>% 
+              dplyr::select(name, sex = gender, `country killed` = country, 
+                            motive, 
+                            date_registered, month_year, year) ) 
+
+df_cpj_union
+
 
 # Variables ----
-df_cpj$coverage %>% table(useNA = "always")
-df_cpj$`source of fire` %>% table(useNA = "always")
-df_cpj$`type of death` %>% table(useNA = "always")
-df_cpj$`impunity (for murder)` %>% table(useNA = "always")
-df_cpj$`taken captive` %>% table(useNA = "always")
-df_cpj$tortured %>% table(useNA = "always")
-df_cpj$threatened %>% table(useNA = "always")
 
-
-
-df_cpj %>% nrow
-
-
-df_cpj %>% 
-  group_by(motive) %>% 
-  tally()
-
-
-df_cpj %>% 
-  mutate(ind = 1) %>% 
-  # filter(`country killed` == "Mexico") %>%
-  ggplot(aes(x = year, 
-             y = ind))  +  
-  stat_summary(fun.y = sum, geom = "line") + 
-  stat_summary(fun.y = sum, geom = "point", size = 2) + 
-  ylab("Journalists killed") + 
-  xlab("Date")+ 
-  scale_x_continuous(breaks = seq(1992, 2016, by = 3))
-
-gg <- df_cpj %>% 
+# summary
+tab <- df_cpj_union %>% 
+  filter(year < 2018) %>% 
   group_by(year, motive) %>% 
   filter(`country killed` == "Mexico") %>%
   summarise(value = n()) %>% 
   ungroup() %>% 
+  spread(motive, value) %>% 
+  mutate(Confirmed = ifelse(year <= 2016 & is.na(Confirmed), 
+                            0, Confirmed),
+         Unconfirmed = ifelse(year <= 2016 & is.na(Unconfirmed), 
+                              0, Unconfirmed),
+         UnconfirmedNA = ifelse(year > 2016, NA, Unconfirmed)) %>% 
+  arrange(desc(year)) %>% 
+  mutate(UnconfirmedIMP = round(na.ma(UnconfirmedNA))) %>% 
+  dplyr::select(year, Confirmed, Unconfirmed = UnconfirmedIMP) %>% 
+  gather(motive, value,  -year)
+tab
+
+
+# # MI ----
+# df_tab <- data.frame(tab) %>% 
+#   dplyr::select(-Unconfirmed)
+# mdf <- missing_data.frame(df_tab) # warnings about missingness patterns
+# show(mdf)
+# imputations <- mi(mdf)
+# dfs <- complete(imputations)
+# dfs
+
+gg <- tab %>% 
   ggplot(aes(x = year, 
              y = value, 
-             fill = motive))  +  
+             fill = factor(motive, c("Unconfirmed", "Confirmed") )))  +  
   geom_bar(stat = "identity") + 
-  scale_x_continuous(breaks = seq(1992, 2016, by = 3)) +
+  scale_x_continuous(breaks = seq(1991, 2019, by = 3)) +
+  guides(fill = guide_legend("Motive")) +
   ylab("Journalists killed") + 
   xlab("Date") 
-ggplotly(gg)
+gg
+# ggplotly(gg)
 
 
-gg <- df_cpj %>% 
-  group_by(year, motive) %>% 
-  filter(`country killed` == "Mexico") %>%
-  summarise(value = n()) %>% 
-  ungroup() %>% 
+gg <- tab %>% 
   ggplot(aes(x = year, 
              y = value, 
-             fill = motive))  +  
+             fill = factor(motive, c("Unconfirmed", "Confirmed") )))  +  
   geom_bar(stat = "identity", position = "fill") + 
   geom_hline(yintercept = .5) + 
-  scale_x_continuous(breaks = seq(1992, 2016, by = 3)) +
+  scale_x_continuous(breaks = seq(1991, 2019, by = 3)) +
+  guides(fill = guide_legend("Motive")) +
   ylab("Journalists killed") + 
   xlab("Date")
-ggplotly(gg)
+gg
+# ggplotly(gg)
 
 
 
