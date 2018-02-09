@@ -51,11 +51,10 @@ df_cpj_confirmed <- read_csv("data/Killed_Confirmed_92_18.csv") %>%
                 primaryNationality, 
                 year, startDate, startDisplay,
                 impunity, 
-                gender, type,
-                localOrForeign,
+                gender, 
                 sourcesOfFire, typeOfDeath,
                 tortured, captive, threatened,
-                jobs, employedAs, 
+                jobs, 
                 mediums, coverages,
                 country, country_name, countryShort, region_short) %>% 
   mutate(date_registered = mdy(startDate),
