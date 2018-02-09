@@ -1,6 +1,5 @@
 
 
-
 load("data/df_cpj_union.RData")
 load("data/df_cpj_tidy.RData")
 
@@ -9,8 +8,8 @@ load("data/df_cpj_tidy.RData")
 CAvar_gg_fun <- function(var.nom = "country", 
                          fecha.min = "2005-01-01",
                          fecha.max = "2017-12-01", 
-                         var.size = 5, 
-                         col.size = 3){
+                         var.size = 9, 
+                         col.size = 9){
   
   require(ggrepel)
   require(FactoMineR)

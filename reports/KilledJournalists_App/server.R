@@ -12,6 +12,8 @@ library(lubridate)
 library(stringr)
 library(imputeTS)
 
+theme_set(theme_minimal(base_size = 17))
+
 # 
 # load("data/df_cpj_union.RData")
 # load("data/df_cpj_tidy.RData")
@@ -49,8 +51,8 @@ shinyServer(function(input, output) {
       geom_bar(stat = "identity") + 
       scale_x_continuous(breaks = seq(1991, 2019, by = 3)) +
       guides(fill = guide_legend("Motive")) +
-      ylab("Journalists killed") + 
-      xlab("Date") 
+      ylab("Número de asesinatos") + 
+      xlab("Fecha") 
     gg
   })
   
@@ -63,8 +65,8 @@ shinyServer(function(input, output) {
       geom_hline(yintercept = .5) + 
       scale_x_continuous(breaks = seq(1991, 2019, by = 3)) +
       guides(fill = guide_legend("Motive")) +
-      ylab("Journalists killed") + 
-      xlab("Date")
+      ylab("Número de asesinatos") + 
+      xlab("Fecha")
     gg
   })
   
