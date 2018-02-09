@@ -56,7 +56,7 @@ df_cpj_confirmed <- read_csv("data/Killed_Confirmed_92_18.csv") %>%
                 tortured, captive, threatened,
                 jobs, 
                 mediums, coverages,
-                country, country_name, countryShort, region_short) %>% 
+                country, region_short) %>% 
   mutate(date_registered = mdy(startDate),
          month_year = dmy(paste0("01-", format(date_registered, "%m-%Y")))) %>% 
   filter(!is.na(name)) %>% 
