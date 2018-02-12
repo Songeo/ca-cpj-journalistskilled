@@ -31,20 +31,23 @@ cache('df_cpj_union')
 # summary
 tab <- df_cpj_union %>% 
   filter(year < 2018) %>% 
-  group_by(year, motive) %>% 
-  filter(`country killed` == "Mexico") %>%
+  group_by(`country killed`, year, motive) %>% 
   summarise(value = n()) %>% 
   ungroup() %>% 
-  spread(motive, value) %>% 
-  mutate(Confirmed = ifelse(year <= 2016 & is.na(Confirmed), 
-                            0, Confirmed),
-         Unconfirmed = ifelse(year <= 2016 & is.na(Unconfirmed), 
-                              0, Unconfirmed),
-         UnconfirmedNA = ifelse(year > 2016, NA, Unconfirmed)) %>% 
+  complete(nesting(motive, year), `country killed`, fill = list(value = 0)) %>% 
+  filter(`country killed` == "Bahrain") %>%
+  group_by(year, motive) %>% 
+  summarise(value = sum(value)) %>% 
+  ungroup() %>% 
+  spread(motive, value, fill = 0) %>% 
+  mutate(UnconfirmedNA = ifelse(year > 2016, NA, Unconfirmed)) %>% 
   arrange(desc(year)) %>% 
   mutate(UnconfirmedIMP = round(na.ma(UnconfirmedNA))) %>% 
   dplyr::select(year, Confirmed, Unconfirmed = UnconfirmedIMP) %>% 
-  gather(motive, value,  -year)
+  gather(motive, value,  -year) %>% 
+  mutate(motive = ifelse(year > 2016 & motive == "Unconfirmed", 
+                         "Unconfirmed Imp", 
+                         motive))
 tab
 
 
@@ -60,9 +63,10 @@ tab
 gg <- tab %>% 
   ggplot(aes(x = year, 
              y = value, 
-             fill = factor(motive, c("Unconfirmed", "Confirmed") )))  +  
+             fill = factor(motive) ))  +  
   geom_bar(stat = "identity") + 
-  scale_x_continuous(breaks = seq(1991, 2019, by = 3)) +
+  scale_x_continuous(breaks = seq(1991, 2019, by = 3),
+                     limits = c(1992, 2018)) +
   guides(fill = guide_legend("Motive")) +
   ylab("Journalists killed") + 
   xlab("Date") 

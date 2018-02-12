@@ -22,13 +22,21 @@ df_cpj_tidy <- df_cpj_confirmed %>%
          value = fct_explicit_na(value, na_level = "Unknown"))
 
 df_cpj_tidy %>% data.frame() %>% head()
+
+df_cpj_tidy
+
 cache("df_cpj_tidy")
+
+
+
+
 
 
 
 # ca ----
 
 df_cpj_tidy$variable %>% unique()
+
 CAvar_gg_fun(var.nom = "typeOfDeath")
 CAvar_gg_fun(var.nom = "sourcesOfFire")
 CAvar_gg_fun(var.nom = "coverages")
@@ -36,4 +44,32 @@ CAvar_gg_fun(var.nom = "country")
 CAvar_gg_fun(var.nom = "region_short")
 CAvar_gg_fun(var.nom = "mediums")
 CAvar_gg_fun(var.nom = "captive")
+
+
+vect.date <- c("2005-01-18", "2010-12-03")
+
+
+vect.date <- paste0(format(ymd(input$dateca.input), "%Y-%m"), "-01")
+
+CAvar_gg_fun(fecha.min = vect.date[1],
+             fecha.max = vect.date[2])
+
+
+
+
+
+# variables ----
+
+tt <- df_cpj_tidy %>% 
+  group_by(year, variable) %>% 
+  summarise(nu = n_distinct(value))
+
+tt %>% 
+  spread(year, nu) %>% 
+  data.frame() 
+
+
+df_cpj_tidy %>% 
+  data.frame() %>% 
+  head
 
