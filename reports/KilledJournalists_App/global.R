@@ -1,5 +1,8 @@
 
 
+
+# Funciones globales
+
 load("data/df_cpj_union.RData")
 load("data/df_cpj_tidy.RData")
 

@@ -1,3 +1,4 @@
+
 # This is the user-interface definition of a Shiny web application.
 # You can find out more about building applications with Shiny here:
 #
@@ -5,7 +6,7 @@
 #
 
 library(shiny)
-library(markdown)
+library(rmarkdown)
 
 shinyUI(fixedPage(
   # Application title
@@ -32,11 +33,8 @@ shinyUI(fixedPage(
              
              tabPanel("Información",
                       icon =  icon("info"),
-                      
-                      includeMarkdown("info-desc.md")
-                      
-             
-             ), # tabpanel info
+                      includeMarkdown("info-desc.Rmd")
+                      ), # tabpanel info
              
              tabPanel("Análisis de correspondencias", 
                       icon =  icon("map"),
@@ -77,7 +75,7 @@ shinyUI(fixedPage(
                       HTML(paste0("<p> El análisis de correspondencias se realiza con ", 
                                   "la función <b style='font-family:courier;'> CA() </b>", 
                                   "del paquete <b style='font-family:courier;'>FactoMineR.</b> ", 
-                                  " La gráfica se hizo con el paquete ", "
+                                  " La gráfica usa el paquete ", "
                                   <b style='font-family:courier;'> ggplot2. </b></p>"))
                       ), # wellpanel - fluidrow
                       br(),
@@ -86,9 +84,9 @@ shinyUI(fixedPage(
                         plotOutput("gg_ca_var", height = "600px", width = "700px"),
                         br(),
                         helpText("Nota: El análisis de correspondencias",
-                                 "requiere de al menos tres variables por comparar.",
-                                 "En caso de salir no permitir el análisis, es recomendable",
-                                 "seleccionar un periodo en el tiempo más amplio.")
+                                 "requiere de al menos tres niveles de una variable.",
+                                 "En caso de no permitir el análisis en la App, es recomendable",
+                                 "seleccionar un periodo de tiempo más amplio.")
                       )
              ), # tabpanel correspondance
              
@@ -121,9 +119,9 @@ shinyUI(fixedPage(
                           br(),
                           HTML(paste0("<p> Los datos de 2017 para motivo <b>no confirmado</b> ",
                                       "no están disponibles. Por lo tanto, se imputó el valor ",
-                                      "con un promedio movil simple usando ", 
+                                      "con un promedio móvil simple usando ", 
                                       "la función <b style='font-family:courier;'> na.ma() </b>", 
-                                      "del paquete <b style='font-family:courier;'> imputeTS </b></p>")),
+                                      "del paquete <b style='font-family:courier;'> imputeTS. </b></p>")),
                           width = 4),
                       mainPanel(
                         htmlOutput("txt_country"),

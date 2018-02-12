@@ -6,7 +6,7 @@
 
 #### Relación de impunidad con otras variables:
 
-**Fuente:** Censo de periodístas asesinados de enero de 1992 a mayo de 2017 del 
+**Fuente:** Censo de periodistas asesinados de enero de 1992 a mayo de 2017 del 
 [**Comité para la Protección de los Periodistas**](https://cpj.org/).
 
 
@@ -38,9 +38,9 @@
       - Justicia (`Full Justice`)
       - Desconocido (`Unknown`)
 
-- El análisis únicamente considera los casos que tienen **motivo confirmado** de asesinato relacionado al trabajo del peridísta. En el panel de **Tendencias** se puede observar el número de casos en el tiempo por motivo para diferentes países. 
+- El análisis únicamente considera los casos que tienen **motivo confirmado** de asesinato relacionado al trabajo del periodista. En el panel de **Tendencias** se puede observar el número de casos en el tiempo por motivo para diferentes países. 
 
-- Los datos del año 2017 de motivo no confirmado no están disponibles, por lo tanto, imputó el valor con un promedio movil simple usando el paquete [**imputeTS**](https://cran.r-project.org/web/packages/imputeTS/index.html).  
+- Los datos del año 2017 de motivo no confirmado no están disponibles, por lo tanto, imputó el valor con un promedio móvil simple usando el paquete [**imputeTS**](https://cran.r-project.org/web/packages/imputeTS/index.html).  
 
 - El análisis de correspondencias se realiza con la función `CA()`del paquete [**FactoMineR**](https://cran.r-project.org/web/packages/FactoMineR/index.html).
 

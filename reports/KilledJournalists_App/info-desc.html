@@ -124,7 +124,7 @@ $(document).ready(function () {
 <hr />
 <div id="relacion-de-impunidad-con-otras-variables" class="section level4">
 <h4>Relación de impunidad con otras variables:</h4>
-<p><strong>Fuente:</strong> Censo de periodístas asesinados de enero de 1992 a mayo de 2017 del <a href="https://cpj.org/"><strong>Comité para la Protección de los Periodistas</strong></a>.</p>
+<p><strong>Fuente:</strong> Censo de periodistas asesinados de enero de 1992 a mayo de 2017 del <a href="https://cpj.org/"><strong>Comité para la Protección de los Periodistas</strong></a>.</p>
 <p><strong>Objetivo:</strong> Encontrar la relación de impunidad con otras variables descriptivas:</p>
 <ul>
 <li><code>source of fire</code></li>
@@ -148,21 +148,21 @@ $(document).ready(function () {
 <li>El CPJ clasifica la <strong>impunidad</strong> en cuatro categorías:
 <ul>
 <li>Impunidad total (<code>Complete Impunity</code>)</li>
-<li>Impunidad parcial (Partial Impunity)</li>
-<li>Justicia (Full Justice)</li>
+<li>Impunidad parcial (<code>Partial Impunity</code>)</li>
+<li>Justicia (<code>Full Justice</code>)</li>
 <li>Desconocido (<code>Unknown</code>)</li>
 </ul></li>
-<li><p>El análisis únicamente considera los casos que tienen <strong>motivo confirmado</strong> de asesinato relacionado al trabajo del peridísta. En el panel de <strong>Tendencias</strong> se puede observar el número de casos en el tiempo por motivo para diferentes países.</p></li>
-<li><p>Los datos de 2017 de motivo no confirmado no están disponibles, por lo tanto, imputó el valor con un promedio movil simple usando el paquete <a href="https://cran.r-project.org/web/packages/imputeTS/index.html"><strong>imputeTS</strong></a>.</p></li>
+<li><p>El análisis únicamente considera los casos que tienen <strong>motivo confirmado</strong> de asesinato relacionado al trabajo del periodista. En el panel de <strong>Tendencias</strong> se puede observar el número de casos en el tiempo por motivo para diferentes países.</p></li>
+<li><p>Los datos del año 2017 de motivo no confirmado no están disponibles, por lo tanto, imputó el valor con un promedio móvil simple usando el paquete <a href="https://cran.r-project.org/web/packages/imputeTS/index.html"><strong>imputeTS</strong></a>.</p></li>
 <li><p>El análisis de correspondencias se realiza con la función <code>CA()</code>del paquete <a href="https://cran.r-project.org/web/packages/FactoMineR/index.html"><strong>FactoMineR</strong></a>.</p></li>
-<li><p>Mayor información de la descripción de los datos y variables se puede consultar en <a href="https://cpj.org/data/methodology/">data methodology</a>.</p></li>
+<li><p>Mayor información de la descripción de los datos y variables se puede consultar en <a href="https://cpj.org/data/methodology/"><strong>data methodology</strong></a>.</p></li>
 </ul>
 <hr />
 </div>
 <div id="codigo" class="section level4">
 <h4>Código:</h4>
-<p>Código disponible <span class="citation">[@ca_cpj_journalistskilled]</span>(<a href="https://github.com/Songeo/ca_cpj_journalistskilled" class="uri">https://github.com/Songeo/ca_cpj_journalistskilled</a>)</p>
-<p>Creado por <span class="citation">[@Songeo]</span>(<a href="https://github.com/Songeo" class="uri">https://github.com/Songeo</a>).</p>
+<p>Código disponible <a href="https://github.com/Songeo/ca_cpj_journalistskilled">ca_cpj_journalistskilled</a></p>
+<p>Creado por <a href="https://github.com/Songeo">Songeo</a>.</p>
 </div>
 </div>
 
