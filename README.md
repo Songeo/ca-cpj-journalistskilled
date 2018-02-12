@@ -3,6 +3,8 @@
 Data from the **Committee to Protect Journalists** <https://cpj.org/>
 
 
+Shiny App: https://songeo.shinyapps.io/killedjournalists_app/
+
 
 ---
 
