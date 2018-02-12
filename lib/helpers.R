@@ -40,10 +40,12 @@ CAvar_gg_fun <- function(var.nom = "country",
   require(ggrepel)
   require(FactoMineR)
   
-  tab.x <- df_cpj_tidy %>% 
+  summ.vars <- df_cpj_tidy %>% 
     filter(variable == var.nom, 
            month_year >= fecha.min, 
-           month_year <= fecha.max) %>% 
+           month_year <= fecha.max) 
+  
+  tab.x <- summ.vars %>% 
     # mutate(value = fct_lump(value, n = 10, ties.method = "random")) %>% 
     group_by(value, impunity) %>% 
     tally %>% 
@@ -87,5 +89,11 @@ CAvar_gg_fun <- function(var.nom = "country",
     geom_text_repel(aes(label = renglon),
                     alpha = .6) + 
     theme(legend.position = "none") +
-    scale_size_manual(values = c(6, 4.5)) 
+    scale_size_manual(values = c(6, 4.5)) + 
+    ggtitle("", 
+            paste( min(summ.vars$month_year),
+                   "a",
+                   max(summ.vars$month_year)) ) +
+    ylab("Dim 2") + 
+    xlab("Dim 1")
 }

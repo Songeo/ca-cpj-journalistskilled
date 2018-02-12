@@ -5,6 +5,7 @@
 #
 
 library(shiny)
+library(markdown)
 
 shinyUI(fixedPage(
   # Application title
@@ -12,11 +13,14 @@ shinyUI(fixedPage(
   # div(style="text-align:center",
   #     img(src="televisa_logo.png", width="100") ),
   # hr(),
-  headerPanel("Análisis de Correspondencias"),
   br(),
+  headerPanel(" • Análisis de Correspondencias • "),
   br(),
   
-  titlePanel("Asociación de impunidad con variables"),
+  br(),
+  
+  br(),
+  titlePanel("Asociación de impunidad con otras variables."),
   
 
   br(),
@@ -24,10 +28,74 @@ shinyUI(fixedPage(
   # Sidebar with a slider input for number of bins 
     
   navbarPage("1992 a 2017",
+             
+             
+             tabPanel("Información",
+                      icon =  icon("info"),
+                      
+                      includeMarkdown("info-desc.md")
+                      
+             
+             ), # tabpanel info
+             
+             tabPanel("Análisis de correspondencias", 
+                      icon =  icon("map"),
+                      br(),
+                      wellPanel(fluidRow(
+                        br(),
+                        h4("Selecciona una variable a comparar y un periodo de tiempo."),
+                        column(5,
+                               selectInput(inputId = 'varnom.input',
+                                           label = 'Variable',
+                                           choices = c("Coverage" = "coverages",
+                                                       "Sources of fire" = "sourcesOfFire",
+                                                       "Job" = "jobs",
+                                                       "Medium" = "mediums",
+                                                       "Gender" = "gender",
+                                                       "Type of death" = "typeOfDeath",
+                                                       "Tortured" = "tortured",
+                                                       "Captive" = "captive",
+                                                       "Threatened" = "threatened",
+                                                       "Country killed" = "country",
+                                                       "Region" = "region_short"))
+                        ),
+                        column(5,
+                               dateRangeInput(inputId = 'dateca.input',
+                                              label = 'Rango de Fecha',
+                                              start = "1992-01-01", 
+                                              end = "2017-12-31", 
+                                              min = "1992-01-01", 
+                                              max = "2017-12-31",
+                                              format = "yyyy-mm-dd", 
+                                              startview = "year",
+                                              language = "es", 
+                                              separator = " a ",
+                                              width = NULL)
+                        )
+                      ),
+                      br(),
+                      HTML(paste0("<p> El análisis de correspondencias se realiza con ", 
+                                  "la función <b style='font-family:courier;'> CA() </b>", 
+                                  "del paquete <b style='font-family:courier;'>FactoMineR.</b> ", 
+                                  " La gráfica se hizo con el paquete ", "
+                                  <b style='font-family:courier;'> ggplot2. </b></p>"))
+                      ), # wellpanel - fluidrow
+                      br(),
+                      mainPanel(
+                        htmlOutput("txt_varinput"),
+                        plotOutput("gg_ca_var", height = "600px", width = "700px"),
+                        br(),
+                        helpText("Nota: El análisis de correspondencias",
+                                 "requiere de al menos tres variables por comparar.",
+                                 "En caso de salir no permitir el análisis, es recomendable",
+                                 "seleccionar un periodo en el tiempo más amplio.")
+                      )
+             ), # tabpanel correspondance
+             
              tabPanel("Tendencias", 
                       icon =  icon("sellsy"),
-                      h3("Asociación de impunidad con variables"),
-                      sidebarPanel(selectInput(inputId = 'country.input',
+                      sidebarPanel(h4("Selecciona una opción de país."),
+                                   selectInput(inputId = 'country.input',
                                                label = 'País',
                                                selected = "-Todos-",
                                                choices = c("-Todos-",
@@ -50,66 +118,21 @@ shinyUI(fixedPage(
           "Syria","Tajikistan","Tanzania","Thailand","Tunisia","Turkey",
           "Turkmenistan","Uganda","UK","Ukraine","Uruguay","USA","Uzbekistan",
           "Venezuela","Vietnam","Yemen","Yugoslavia","Zimbabwe")),
-                                   dateRangeInput(inputId = 'datetrend.input',
-                                                  label = 'Rango de Fecha',
-                                                  start = "2005-01-01", 
-                                                  end = "2017-12-31", 
-                                                  min = "1992-01-01", 
-                                                  max = "2017-12-31",
-                                                  format = "yyyy-mm", 
-                                                  startview = "year",
-                                                  language = "es", 
-                                                  separator = " a ",
-                                                  width = NULL),
-                                   width = 4),
+                          br(),
+                          HTML(paste0("<p> Los datos de 2017 para motivo <b>no confirmado</b> ",
+                                      "no están disponibles. Por lo tanto, se imputó el valor ",
+                                      "con un promedio movil simple usando ", 
+                                      "la función <b style='font-family:courier;'> na.ma() </b>", 
+                                      "del paquete <b style='font-family:courier;'> imputeTS </b></p>")),
+                          width = 4),
                       mainPanel(
+                        htmlOutput("txt_country"),
                         h4("Número de casos"),
                         plotOutput("gg_trend_n", height = "300px", width = "700px"),
                         h4("Proporción de motivo"),
                         plotOutput("gg_trend_p", height = "300px", width = "700px")
-                      )), #tabpanel tendencias
-             tabPanel("Análisis de correspondencias", 
-                      icon =  icon("map"),
-                      h3("Asociación de impunidad con variables"),
-                      br(),
-                      fluidRow(
-                        column(5,
-                               selectInput(inputId = 'varnom.input',
-                                           label = 'Variable',
-                                           choices = c("Coverage" = "coverages",
-                                                       "Sources of fire" = "sourcesOfFire",
-                                                       "Job" = "jobs",
-                                                       "Medium" = "mediums",
-                                                       "Gender" = "gender",
-                                                       "Type of death" = "typeOfDeath",
-                                                       "Tortured" = "tortured",
-                                                       "Captive" = "captive",
-                                                       "Threatened" = "threatened",
-                                                       "Country killed" = "country",
-                                                       "Region" = "region_short"))
-                        ),
-                        column(5,
-                               dateRangeInput(inputId = 'dateca.input',
-                                              label = 'Rango de Fecha',
-                                              start = "2005-01-01", 
-                                              end = "2017-12-31", 
-                                              min = "1992-01-01", 
-                                              max = "2017-12-31",
-                                              format = "yyyy-mm", 
-                                              startview = "year",
-                                              language = "es", 
-                                              separator = " a ",
-                                              width = NULL)
-                        )
-                      ), # fluidrow
-                      br(),
-                      mainPanel(
-                        plotOutput("gg_ca_var", height = "600px", width = "700px")
-                        )
-                      ), # tabpanel correspondance
-             tabPanel("Información",
-                      icon =  icon("info")
-                      ) # tabpanel info
+                      )) #tabpanel tendencias
+             
              
              ),
   
